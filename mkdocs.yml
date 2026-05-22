@@ -1,0 +1,87 @@
+site_name: causalmt 文档
+site_description: 面向多值干预决策的因果表示学习与组合干预推荐工具包
+site_author: xuhaoli
+site_url: https://norvain.github.io/causalmt/
+
+repo_name: Norvain/causalmt
+repo_url: https://github.com/Norvain/causalmt
+
+copyright: Copyright &copy; 2026 xuhaoli · MIT License
+
+theme:
+  name: material
+  language: zh
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: 切换到暗色模式
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到亮色模式
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - navigation.indexes
+    - content.code.copy
+    - content.code.annotate
+    - search.suggest
+    - search.highlight
+    - toc.follow
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_root_heading: true
+            show_root_full_path: false
+            show_source: true
+            show_signature_annotations: true
+            separate_signature: true
+            members_order: source
+            heading_level: 2
+            docstring_section_style: table
+            merge_init_into_class: true
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
+
+nav:
+  - 首页: index.md
+  - 快速上手: quickstart.md
+  - 用户指南:
+      - GACRNet · 多值干预效应估计: guide/gacrnet.md
+      - IDCIO · 组合干预推荐: guide/idcio.md
+  - API 参考:
+      - GACRNet: api/gacrnet.md
+      - IDCIO: api/idcio.md
+      - 数据加载: api/data.md
+      - 评估指标: api/metrics.md
+  - 更新日志: changelog.md

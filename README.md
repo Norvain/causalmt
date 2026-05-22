@@ -2,6 +2,8 @@
 
 面向多值干预决策的因果表示学习与组合干预推荐工具包。基于毕业论文方法实现，提供 sklearn 风格的简洁 API。
 
+📖 在线文档：<https://norvain.github.io/causalmt/>
+
 - **`GACRNet`** —— 多值干预效应估计，扩展 DragonNet 到 K 类干预
 - **`IDCIO`** —— 交互效应分解的组合干预推荐（原子效应 → 交互效应 → QUBO 求解）
 
