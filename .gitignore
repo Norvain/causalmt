@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Test / coverage
+.pytest_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+
+# Type checking
+.mypy_cache/
+.pyre/
+.pytype/
+
+# Virtual envs
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Notebooks
+.ipynb_checkpoints/
+
+# 数据 & 训练产物
+# 仅忽略仓库根目录的临时数据夹，避免误伤 src/causalmt/data/ 包目录
+/data/
+*.pt
+*.pth
+*.ckpt
+saved_models/
+logs/
+runs/
+
+# 包数据缓存目录
+.causalmt_cache/

@@ -1,0 +1,91 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "causalmt"
+dynamic = ["version"]
+description = "面向多值干预决策的因果表示学习与组合干预推荐工具包"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+authors = [{ name = "xuhaoli" }]
+keywords = ["causal-inference", "multi-treatment", "dragonnet", "uplift-modeling"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=2.0",
+    "numpy>=1.23",
+    "pandas>=1.5",
+    "scikit-learn>=1.2",
+    "tqdm>=4.65",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "black>=23.0",
+    "ruff>=0.1",
+    "isort>=5.12",
+]
+examples = [
+    "jupyter>=1.0",
+    "matplotlib>=3.7",
+]
+
+[project.urls]
+Homepage = "https://github.com/Norvain/causalmt"
+Repository = "https://github.com/Norvain/causalmt"
+
+[tool.hatch.version]
+path = "src/causalmt/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/causalmt"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/causalmt",
+    "tests",
+    "examples",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "pyproject.toml",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py39", "py310", "py311", "py312"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+markers = [
+    "unit: 单元测试",
+    "integration: 集成测试",
+    "slow: 慢测试",
+]
