@@ -36,7 +36,7 @@ pip install causalmt
 
 依赖 `torch>=2.0`、`numpy`、`pandas`、`scikit-learn`、`tqdm`。支持 Python 3.9–3.12，自动选择 CUDA / MPS / CPU。
 
-## 一瞥
+## 快速开始
 
 ```python
 from causalmt import GACRNet, IDCIO
