@@ -85,6 +85,6 @@ actions, confidence = rec.recommend(x_new, return_uncertainty=True)
 
 ## 完整示例
 
-[`03_idcio_combined_recommendation.ipynb`](https://github.com/Norvain/causalmt/blob/main/examples/03_idcio_combined_recommendation.ipynb) 演示了从 `GACRNet` 训练到 `IDCIO` 推荐的全流程。
+[`02_multi_treatment_attribution.ipynb`](https://github.com/Norvain/causalmt/blob/main/examples/02_multi_treatment_attribution.ipynb) 演示了从 `GACRNet` 训练到 `IDCIO` 推荐的全流程。
 
 完整参数与方法签名见 [API 参考 · IDCIO](../api/idcio.md)。

@@ -121,13 +121,12 @@ print("ATE error:", ate_error(cate_pred, ate_true=test.ate_true))
 
 ## 示例
 
-仓库 `examples/` 下提供 3 个端到端 notebook（已嵌入运行输出）：
+仓库 `examples/` 下提供 2 个端到端 notebook（已嵌入运行输出）：
 
 | Notebook | 内容 |
 |---|---|
 | `01_ihdp_single_treatment.ipynb` | IHDP 标准基准（二元干预） |
-| `02_multi_treatment_attribution.ipynb` | EconML multi_attribution 多值干预 |
-| `03_idcio_combined_recommendation.ipynb` | IDCIO 组合推荐全流程 |
+| `02_multi_treatment_attribution.ipynb` | EconML multi_attribution 多值干预与 IDCIO 组合推荐 |
 
 ## 引用
 
