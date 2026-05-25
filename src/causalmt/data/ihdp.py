@@ -6,8 +6,9 @@
     yf (n, 100)      factual 结果
     mu0, mu1 (n, 100) 真实潜在结果均值
 
-数据需用户自行下载，例如 https://www.fredjo.com/files/ihdp_npci_1-100.train.npz
-（参见 https://github.com/AMLab-Amsterdam/CEVAE/tree/master/datasets/IHDP）
+仓库示例使用项目目录下的 data/ihdp/：
+    ihdp_npci_1-100.train.npz
+    ihdp_npci_1-100.test.npz
 """
 
 from __future__ import annotations

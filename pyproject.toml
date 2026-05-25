@@ -64,6 +64,7 @@ packages = ["src/causalmt"]
 [tool.hatch.build.targets.sdist]
 include = [
     "src/causalmt",
+    "data/ihdp",
     "tests",
     "examples",
     "README.md",

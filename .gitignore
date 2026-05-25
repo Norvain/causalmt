@@ -63,6 +63,9 @@ site/
 # 数据 & 训练产物
 # 仅忽略仓库根目录的临时数据夹，避免误伤 src/causalmt/data/ 包目录
 /data/
+!/data/
+!/data/ihdp/
+!/data/ihdp/*.npz
 *.pt
 *.pth
 *.ckpt

@@ -81,8 +81,8 @@ actions, confidence = rec.recommend(x_new, return_uncertainty=True)
 from causalmt.data import load_ihdp, load_multi_attribution
 from causalmt.metrics import pehe, ate_error, policy_risk
 
-# IHDP 标准基准（二元干预）；data_dir 下需有 ihdp_npci_1-100.{train,test}.npz
-train, test = load_ihdp("path/to/ihdp", slice_idx=0)
+# IHDP 标准基准（二元干预）；仓库内数据位于 data/ihdp/
+train, test = load_ihdp("data/ihdp", slice_idx=0)
 
 # EconML 多值干预归因数据；接受本地路径或 URL，自动缓存到 ~/.causalmt_cache/
 ds = load_multi_attribution("multi_attribution_sample.csv", split="atomic")
@@ -93,8 +93,8 @@ print("PEHE:", pehe(cate_pred, test.cate_true))
 print("ATE error:", ate_error(cate_pred, ate_true=test.ate_true))
 ```
 
-数据本包不附带：loader 接受用户本地路径或 URL，下载结果缓存到 `~/.causalmt_cache/`
-（可用环境变量 `CAUSALMT_CACHE_DIR` 覆盖）。
+仓库内提供 IHDP 示例数据；`load_multi_attribution` 接受本地路径或 URL，下载结果缓存到
+`~/.causalmt_cache/`（可用环境变量 `CAUSALMT_CACHE_DIR` 覆盖）。
 
 ## API 速查
 
