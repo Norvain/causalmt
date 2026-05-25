@@ -5,6 +5,8 @@ K 个干预（不含控制组），每个 action z_k ∈ {0, 1}。目标函数::
     V(z) = Σ_k z_k * Q[k, k] + Σ_{i<j} z_i * z_j * Q[i, j] - cost(z)
 
 其中 Q 矩阵的对角线放原子效应 τ_k，上三角放交互效应 τ_{ij}。
+成本支持两种形态：全体样本共享的 (K,) 单位成本，或每个样本不同的
+(n, K) 成本矩阵。
 支持两种求解器：
     - exhaustive：穷举 2^K 个 binary 组合（K ≤ 12 时秒级）
     - greedy：贪心翻转启发式（K 较大时使用）
@@ -104,13 +106,26 @@ def _enumerate_actions(k: int) -> np.ndarray:
     return np.array(list(itertools.product([0, 1], repeat=k)), dtype=np.float64)
 
 
+def _prepare_costs(costs: np.ndarray | None, k: int, n: int | None = None) -> np.ndarray | None:
+    """校验并标准化成本数组。"""
+    if costs is None:
+        return None
+    arr = np.asarray(costs, dtype=np.float64)
+    if arr.shape == (k,):
+        return arr
+    if n is not None and arr.shape == (n, k):
+        return arr
+    expected = f"({k},)" if n is None else f"({k},) 或 ({n}, {k})"
+    raise ValueError(f"costs 形状应为 {expected}，得 {arr.shape}")
+
+
 def _objective(actions: np.ndarray, q: np.ndarray, costs: np.ndarray | None) -> np.ndarray:
     """计算 (M, K) actions 在单/批 Q 矩阵下的目标值 V(z) - cost(z)。
 
     Args:
         actions: (M, K) 候选 action
         q: (K, K) 或 (n, K, K)
-        costs: (K,) 或 None，每个干预的单位成本
+        costs: (K,)、(n, K) 或 None，每个干预的单位成本或样本级成本
 
     Returns:
         (M,) 或 (n, M) 的目标值矩阵
@@ -121,12 +136,17 @@ def _objective(actions: np.ndarray, q: np.ndarray, costs: np.ndarray | None) -> 
         # 对每个 m 行：sum_{i,j} z_i Q_ij z_j（这里 Q 已经只上三角有交互值）
         vals = np.einsum("mi,ij,mj->m", actions, q, actions)
         if costs is not None:
+            if costs.ndim != 1:
+                raise ValueError("单样本 q 仅支持 costs shape (K,)")
             vals = vals - actions @ costs
         return vals
     # batched
     vals = np.einsum("mi,nij,mj->nm", actions, q, actions)
     if costs is not None:
-        vals = vals - actions @ costs
+        if costs.ndim == 1:
+            vals = vals - actions @ costs
+        else:
+            vals = vals - np.einsum("mk,nk->nm", actions, costs)
     return vals
 
 
@@ -140,7 +160,7 @@ def solve_qubo_exhaustive(
 
     Args:
         q: (K, K) 单样本 或 (n, K, K) 批量
-        costs: (K,) 每干预单位成本，None 时无成本
+        costs: (K,) 或 (n, K) 每干预成本，None 时无成本
         maximize: True 找 V(z) 最大；False 找最小
 
     Returns:
@@ -150,8 +170,8 @@ def solve_qubo_exhaustive(
     q = np.asarray(q, dtype=np.float64)
     k = q.shape[-1]
     candidates = _enumerate_actions(k)  # (2^K, K)
-    if costs is not None:
-        costs = np.asarray(costs, dtype=np.float64).reshape(k)
+    n = q.shape[0] if q.ndim == 3 else None
+    costs = _prepare_costs(costs, k, n)
 
     vals = _objective(candidates, q, costs)  # (M,) 或 (n, M)
 
@@ -178,7 +198,7 @@ def solve_qubo_greedy(
 
     Args:
         q: (K, K) 或 (n, K, K)
-        costs: (K,) 或 None
+        costs: (K,)、(n, K) 或 None
         maximize: True 最大化，False 最小化
         max_iter: 最大翻转轮数（每轮至多翻转一位）
 
@@ -187,14 +207,18 @@ def solve_qubo_greedy(
         values: () 或 (n,)
     """
     q = np.asarray(q, dtype=np.float64)
+    k = q.shape[-1]
     if q.ndim == 2:
+        costs = _prepare_costs(costs, k)
         return _greedy_single(q, costs, maximize, max_iter)
 
     n, k, _ = q.shape
+    costs = _prepare_costs(costs, k, n)
     actions = np.zeros((n, k), dtype=np.int64)
     values = np.zeros(n, dtype=np.float64)
     for i in range(n):
-        actions[i], values[i] = _greedy_single(q[i], costs, maximize, max_iter)
+        row_costs = costs[i] if costs is not None and costs.ndim == 2 else costs
+        actions[i], values[i] = _greedy_single(q[i], row_costs, maximize, max_iter)
     return actions, values
 
 

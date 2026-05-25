@@ -80,6 +80,27 @@ def test_solve_qubo_batched() -> None:
 
 
 @pytest.mark.unit
+def test_solve_qubo_batched_sample_costs() -> None:
+    """批量求解支持每个样本不同的干预成本。"""
+    q = np.stack(
+        [
+            np.array([[2.0, 0.0], [0.0, 1.0]]),
+            np.array([[2.0, 0.0], [0.0, 1.0]]),
+        ]
+    )
+    costs = np.array(
+        [
+            [0.0, 0.0],
+            [3.0, 0.0],
+        ]
+    )
+    actions, values = solve_qubo_exhaustive(q, costs=costs, maximize=True)
+    np.testing.assert_array_equal(actions[0], [1, 1])
+    np.testing.assert_array_equal(actions[1], [0, 1])
+    np.testing.assert_allclose(values, [3.0, 1.0])
+
+
+@pytest.mark.unit
 def test_solve_qubo_greedy_matches_exhaustive_on_easy() -> None:
     """简单可分场景下 greedy 和 exhaustive 一致。"""
     rng = np.random.default_rng(0)

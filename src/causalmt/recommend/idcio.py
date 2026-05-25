@@ -381,7 +381,7 @@ class IDCIO:
 
         Args:
             x: shape (n, d) 待推荐样本
-            costs: shape (K,) 每个原子干预的单位成本（不含控制组）
+            costs: shape (K,) 或 (n, K) 每个原子干预的单位成本或样本级成本（不含控制组）
             method: "exhaustive" | "greedy"
             maximize: True 最大化 V(z)，False 最小化
             return_uncertainty: True 时同时返回基于 MC Dropout 的 action 置信度
